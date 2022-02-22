@@ -1,9 +1,10 @@
-import React from 'react';  
+import React, { useState } from 'react';  
 import styles from './Formulario.module.css';
 import PropTypes from 'prop-types';
 import useSelect from '../hooks/useSelect';
+import Country from './country';
 
-const Formulario = ({guardarCategoria}) => {
+const Formulario = ({guardarCategoria, guardarPais, pais}) => {
 
     const OPCIONES = [
         { value: 'general', label: 'General'},
@@ -16,13 +17,15 @@ const Formulario = ({guardarCategoria}) => {
     ]
 
     // utilizar custom hook
-    const [ categoria, SelectNoticias ] = useSelect('general', OPCIONES);
+    const [ categoria, SelectNoticias ] = useSelect('general', OPCIONES); //le paso las opciones como parametroide
+    
 
     // submit al form, pasar categoria a app.js
     const buscarNoticias = e => {
         e.preventDefault();
 
         guardarCategoria(categoria);
+        guardarPais(pais)
     }
 
     return ( 
@@ -34,6 +37,10 @@ const Formulario = ({guardarCategoria}) => {
                     <h2 className={styles.heading}>Encuentra Noticias por Categoría</h2>
 
                     <SelectNoticias />
+                    <Country
+                    guardarPais={guardarPais}
+                    pais = {pais}
+                    />
 
                     <div className="input-field col s12">
                         <input 

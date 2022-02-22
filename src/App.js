@@ -6,12 +6,26 @@ import ListadoNoticias from './components/ListadoNoticias';
 function App() {
 
   // definir la categoria y noticias
-  const [categoria, guardarCategoria] = useState('');
-  const [noticias, guardarNoticias] = useState([]);
+  const [categoria, guardarCategoria] = useState(''); //esta categoria que se guarda, viene desde formulario, pero se deifne aca, porque se usa aca
+  const [noticias, guardarNoticias] = useState([]); //estas son las noticias que devuelve la API
+  const [pais, guardarPais] = useState('mx');
 
   useEffect(() => {
-    const consultarAPI = async () => {
-      const url = `https://newsapi.org/v2/top-headlines?country=mx&category=${categoria}&apiKey=6c1c1dfcb4a943c7bf481bc628b80153`;
+    var country = "mx";
+      switch(pais){
+        case "Mexico":
+          country = "mx"
+          break;
+        case "Brasil":
+          country = "br"
+          break;
+        case "Estados Unidos":
+          country = "us"
+          break;
+        }     
+    const consultarAPI = async () => {         
+      
+      const url = `https://newsapi.org/v2/top-headlines?country=${country}&category=${categoria}&apiKey=351345268a0b4b0384b628de55fe7e5a`;
 
       const respuesta = await fetch(url);
       const noticias = await respuesta.json();
@@ -19,7 +33,7 @@ function App() {
       guardarNoticias(noticias.articles);
     }
     consultarAPI();
-  }, [categoria]);
+  }, [categoria, pais]);
 
   return (
     <Fragment>
@@ -30,6 +44,8 @@ function App() {
         <div className="container white">
             <Formulario 
               guardarCategoria={guardarCategoria}
+              guardarPais={guardarPais}
+              pais={pais}
             />
 
             <ListadoNoticias 
